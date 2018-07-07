@@ -70,10 +70,10 @@ main()
 	
 	for	(k = 0; k < 7; k++)
 	{
-		if(s_bPlots != 1)				 // Se não quiser gerar o poder para diferentes
-			dfalse = vfalse[1];			 // valores de beta1, então gere só para 1 deles
-		else {							 // e faça a simulação de poder apenas alterando 
-			dfalse = vfalse[k];			 // o tamanho amostral
+		if(s_bPlots != 1)        // Se não quiser gerar o poder para diferentes
+			dfalse = vfalse[1];    // valores de beta1, então gere só para 1 deles
+		else {                   // e faça a simulação de poder apenas alterando 
+			dfalse = vfalse[k];    // o tamanho amostral
 			B = 0;
 		}
 
@@ -98,11 +98,9 @@ main()
 	println("\n\n");
 
     fclose(file);  
-
 }	
 
 // Função Monte Carlo //
-
 montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose, const file)
 {
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -128,36 +126,36 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	// Declaração de parâmetros da simulação e de outras variáveis
-	decl vparams = <0.85; -0.93; -1.22; 40.5>;	// vetor de parâmetros verdadeiros
-	decl dc = 0.1;								// Incremento na razão de chances
-	decl vparamsODDS = exp(dc*vparams[:2]);		// Razão de chances dos parâmetros Beta
-	decl vestimators = <0;0;0;1>;				// chute inicial
+	decl vparams = <0.85; -0.93; -1.22; 40.5>;  // vetor de parâmetros verdadeiros
+	decl dc = 0.1;                              // Incremento na razão de chances
+	decl vparamsODDS = exp(dc*vparams[:2]);     // Razão de chances dos parâmetros Beta
+	decl vestimators = <0;0;0;1>;               // chute inicial
 	decl vest_bs = <0;0;0;1>;
 	
 	decl j, i, ir;
 	decl fail, failB, failT, failF;
 	fail = failB = failT = failF = 0;
 		// Contador de falhas de convergência da estimação:
-		// 1) da regressão					  2) da reg. nas réplicas de Bootstrap
-		// 3) do teste quando H0 verdadeira	  4) do teste quando H0 falso
+		// 1) da regressão                    2) da reg. nas réplicas de Bootstrap
+		// 3) do teste quando H0 verdadeira   4) do teste quando H0 falso
 	
 	decl dval, dval0;
-		// valor da LogVeros. com os Estimadores e da Restrita
+    // valor da LogVeros. com os Estimadores e da Restrita
 	
 	// Variáveis da Estimação Pontual //
 	decl mestimators, mestimators_bs;
 	mestimators = mestimators_bs = zeros(R, 4);	
-		// matrizes de estimativas Monte Carlo, de Erros Padrão e de Bootstrap
+	  // matrizes de estimativas Monte Carlo, de Erros Padrão e de Bootstrap
 	decl mbootstrap = zeros(B, 4);
 	
 	// Variáveis da Estimação Intervalar //
 	decl vcIC99, vcIC95, vcIC90;
 	vcIC99 = vcIC95 = vcIC90 = <0;0;0;0>;
-		// contadores de que pertencem ao IC
+    // contadores de que pertencem ao IC
 
 	decl vcIC99ODDS, vcIC95ODDS, vcIC90ODDS;
 	vcIC99ODDS = vcIC95ODDS = vcIC90ODDS = <0;0;0>;					
-		// contadores de que pertencem ao IC de Razão de Chances			 
+    // contadores de que pertencem ao IC de Razão de Chances			 
 	
 	// Variáveis do Teste de Hipóteses //											   
 	decl vrest, mK_1;
@@ -176,13 +174,13 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 		// Vetores estatísticas de teste (1 para poder e 2 para tamanho)
 	
 	// Variáveis Independentes
-	ranseed("GM");								// Gerador George Marsaglia
+	ranseed("GM");                // Gerador George Marsaglia
 	ranseed(SEED);							
 	g_vx2 = rann(N, 1);					  
 
-	ranseed(SEED);								// Fixar semente (Uniforme) 
+	ranseed(SEED);                // Fixar semente (Uniforme) 
 	g_vx3 = ranu(N, 1); 
-	g_mX = 1~g_vx2~g_vx3;						// Matrix X
+	g_mX = 1~g_vx2~g_vx3;         // Matrix X
 
 	
 	// \eta e \mu (usando a Logit como funcao de ligação)
@@ -190,17 +188,17 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 	decl vmu = (exp(veta)) ./ (1 + exp(veta));
 
 
-	ranseed(SEED);								// Fixar semente (Beta) 
-	MaxControl(50, -1); 						// Limitando o número de iterações
+	ranseed(SEED);                // Fixar semente (Beta) 
+	MaxControl(50, -1);           // Limitando o número de iterações
 
 	// Declaração de Variáveis que serão usadas no Laço
 	decl mtemp, mFishInv, vSE;
 	decl vIC99min, vIC99max, vIC95min;
-	decl vIC95max, vIC90min, vIC90max;			 // IC dos parâmetros
+	decl vIC95max, vIC90min, vIC90max;          // IC dos parâmetros
 	decl vIC99minODDS, vIC99maxODDS, vIC95minODDS;
-	decl vIC95maxODDS, vIC90minODDS, vIC90maxODDS; 		// IC da Razão de Chances
-	decl vU, mFishInv_rest;						// Para a estatística do teste Escore			
-	decl veta_hat, vmu_hat, dphi_hat;			// Para o Bootstrap Paramétrico
+	decl vIC95maxODDS, vIC90minODDS, vIC90maxODDS;     // IC da Razão de Chances
+	decl vU, mFishInv_rest;                     // Para a estatística do teste Escore			
+	decl veta_hat, vmu_hat, dphi_hat;           // Para o Bootstrap Paramétrico
 	
 	// Laço Monte Carlo
 	for (j = 0; j < R; j++)
@@ -226,9 +224,9 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 			mestimators[j][] = vestimators';
 
 			/* * * ESTIMAÇÃO INTERVALAR * * */
-			decl mKest = mfKmatrix(vestimators);	   // Informação de Fisher
-			mFishInv = invertsym(mKest);			   // Inversa da Informação de Fisher
-			vSE = sqrt(diagonal(mFishInv));			   // Erro padrão
+			decl mKest = mfKmatrix(vestimators);       // Informação de Fisher
+			mFishInv = invertsym(mKest);               // Inversa da Informação de Fisher
+			vSE = sqrt(diagonal(mFishInv));            // Erro padrão
 			
 			// Intervalos de Confiança dos Parâmetros
 			vIC99min = (vestimators - quann(1 - 0.01/2) * vSE');					
@@ -256,11 +254,11 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 			vcIC90 = vcIC90 + (vparams .> vIC90min .&& vparams .< vIC90max); 					
 
 			vcIC99ODDS = vcIC99ODDS +
-						 (vparamsODDS .> vIC99minODDS .&& vparamsODDS .< vIC99maxODDS);
+                         (vparamsODDS .> vIC99minODDS .&& vparamsODDS .< vIC99maxODDS);
 			vcIC95ODDS = vcIC95ODDS +
-						 (vparamsODDS .> vIC95minODDS .&& vparamsODDS .< vIC95maxODDS);
+                         (vparamsODDS .> vIC95minODDS .&& vparamsODDS .< vIC95maxODDS);
 			vcIC90ODDS = vcIC90ODDS +
-						 (vparamsODDS .> vIC90minODDS .&& vparamsODDS .< vIC90maxODDS);
+                         (vparamsODDS .> vIC90minODDS .&& vparamsODDS .< vIC90maxODDS);
    																					   
 			/* * * TESTE DE HIPÓTESES * * */
 			
@@ -269,11 +267,11 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 			// ======================= //
 			
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-			 *	 As Hipóteses do Teste são (2 restrições):					 	 	 *		
-			 *																		 *
-			 *		H0:		 beta1 =  0.85		vs.		H1:		  beta1 !=  0.85	 *
-			 *			(e)	 beta2 = -0.93		vs.			(ou)  beta2 != -0.93	 *
-			 *																	 	 *
+			 *   As Hipóteses do Teste são (2 restrições):                           *
+			 *                                                                       *
+			 *      H0:      beta1 =  0.85      vs.     H1:       beta1 !=  0.85     *
+			 *          (e)  beta2 = -0.93      vs.         (ou)  beta2 != -0.93     *
+			 *                                                                       *
 			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */	
 			 
 			// Calculando o valor da Log-Verossimilhança Restrita
@@ -303,10 +301,10 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 			// ==================== //
 	
 			/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-			 *	 A Hipótese do Teste é (1 restrição):						 	 	 *
-			 *																		 *
-			 *		H0:		 beta1 = dfalse		vs.		H1:		  beta1 != dfalse	 *
-			 *																	 	 *
+			 *   A Hipótese do Teste é (1 restrição):                                *
+			 *                                                                       *
+			 *      H0:      beta1 = dfalse     vs.     H1:       beta1 != dfalse    *
+			 *                                                                       *
 			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		 
 			// Armazenando a estatística de teste da Razão de Verossimilhança
