@@ -50,7 +50,7 @@ dfRegBeta(const vP, const adFunc, const avScore, const amHess)
 	// Criando o vetor de Log-Verossimilhanças para cada observação t //
 	decl vLogLike_t = loggamma(dphi) - loggamma(vmu .* dphi) 
 	                - loggamma((1-vmu) .* dphi) + ((vmu .* dphi) - 1).*log(g_vy) 
-	                + (((1-vmu).*dphi) - 1).*log(1-g_vy);
+	                + (((1-vmu).*dphi) - 1).*log(1-g_vy); 
 					
 	// Somando o vetor para obter a Log-Verossimilhança	//
 	adFunc[0] = sumc(vLogLike_t);
