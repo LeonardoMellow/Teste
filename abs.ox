@@ -70,9 +70,9 @@ main()
 	
 	for	(k = 0; k < 7; k++)
 	{
-		if(s_bPlots != 1)        // Se não quiser gerar o poder para diferentes
+		if(s_bPlots != 1)              // Se não quiser gerar o poder para diferentes
 			dfalse = vfalse[1];    // valores de beta1, então gere só para 1 deles
-		else {                   // e faça a simulação de poder apenas alterando 
+		else {                         // e faça a simulação de poder apenas alterando 
 			dfalse = vfalse[k];    // o tamanho amostral
 			B = 0;
 		}
@@ -140,7 +140,7 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 		// 3) do teste quando H0 verdadeira   4) do teste quando H0 falso
 	
 	decl dval, dval0;
-    // valor da LogVeros. com os Estimadores e da Restrita
+          // valor da LogVeros. com os Estimadores e da Restrita
 	
 	// Variáveis da Estimação Pontual //
 	decl mestimators, mestimators_bs;
@@ -151,11 +151,11 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 	// Variáveis da Estimação Intervalar //
 	decl vcIC99, vcIC95, vcIC90;
 	vcIC99 = vcIC95 = vcIC90 = <0;0;0;0>;
-    // contadores de que pertencem ao IC
+          // contadores de que pertencem ao IC
 
 	decl vcIC99ODDS, vcIC95ODDS, vcIC90ODDS;
 	vcIC99ODDS = vcIC95ODDS = vcIC90ODDS = <0;0;0>;					
-    // contadores de que pertencem ao IC de Razão de Chances			 
+          // contadores de que pertencem ao IC de Razão de Chances			 
 	
 	// Variáveis do Teste de Hipóteses //											   
 	decl vrest, mK_1;
@@ -171,7 +171,7 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 
 	decl vLR1, vSc1, vWa1, vLR2, vSc2, vWa2;
 	vLR1 = vSc1 = vWa1 = vLR2 = vSc2 = vWa2 = zeros(R, 1);
-		// Vetores estatísticas de teste (1 para poder e 2 para tamanho)
+          // Vetores estatísticas de teste (1 para poder e 2 para tamanho)
 	
 	// Variáveis Independentes
 	ranseed("GM");                // Gerador George Marsaglia
@@ -254,11 +254,11 @@ montecarlo(const N, const R, const B, const SEED, const rbeta_usr, const verbose
 			vcIC90 = vcIC90 + (vparams .> vIC90min .&& vparams .< vIC90max); 					
 
 			vcIC99ODDS = vcIC99ODDS +
-                         (vparamsODDS .> vIC99minODDS .&& vparamsODDS .< vIC99maxODDS);
+                                    (vparamsODDS .> vIC99minODDS .&& vparamsODDS .< vIC99maxODDS);
 			vcIC95ODDS = vcIC95ODDS +
-                         (vparamsODDS .> vIC95minODDS .&& vparamsODDS .< vIC95maxODDS);
+                                    (vparamsODDS .> vIC95minODDS .&& vparamsODDS .< vIC95maxODDS);
 			vcIC90ODDS = vcIC90ODDS +
-                         (vparamsODDS .> vIC90minODDS .&& vparamsODDS .< vIC90maxODDS);
+                                    (vparamsODDS .> vIC90minODDS .&& vparamsODDS .< vIC90maxODDS);
    																					   
 			/* * * TESTE DE HIPÓTESES * * */
 			
