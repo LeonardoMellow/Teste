@@ -31,7 +31,7 @@ decl s_y_bs;
 decl g_mX;
 decl g_vx2;
 decl g_vx3;
-decl dfalse;					// Valor de Beta1 sob H0 quando H0 é falsa
+decl dfalse;		        // Valor de beta1 sob H0 quando H0 é falsa
 	 
 // ==================================================================== //
 //   Declaração da Função de Log-Verossimilhança que entra em MaxBFGS   //
