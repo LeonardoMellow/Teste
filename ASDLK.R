@@ -70,7 +70,7 @@ montecarlo <- function(N = 25, R = 1000, B = 250, F_H0Value = 0.7,
   #   R            Número de réplicas de Monte Carlo (default é 1000).
   #   B            Número de réplicas de Bootstrap (default é 250). 
   #   F_H0Value    Valor de H0 quando falsa (default é 0.7).
-  
+  #
   #   SEED         Semente para garantir reprodutibilidade com Ox
   #
   #   rbeta_usr    Boolean (default é TRUE). Geração da distribuição Beta pelo 
