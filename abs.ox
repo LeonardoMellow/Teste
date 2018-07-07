@@ -25,7 +25,7 @@
  *                                                                             *
  * NOTAS:    Ao executar esse programa, a diretiva de pré-processamento condi- *
  *           cional DONT_PANIC em "beta_fun.ox" não será executada, ocultando  *
- *           a impressão de	"beta_fun.ox" e deixando apenas a impressão desse  *
+ *           a impressão de "beta_fun.ox" e deixando apenas a impressão desse  *
  *           script.                                                           *
  *                                                                             *
  ******************************************************************************/
